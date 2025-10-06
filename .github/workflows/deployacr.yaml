@@ -5,7 +5,7 @@ on:
 
 jobs:
 	
-   checkacr:
+  checkacr:
     environment: development
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +16,7 @@ jobs:
       - name: Check ACR
         run: az deployment group what-if --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./acr.bicep
 
-   deployacr:
+  deployacr:
     needs: checkacr
     environment: development
     runs-on: ubuntu-latest
