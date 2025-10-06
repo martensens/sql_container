@@ -4,7 +4,7 @@ targetScope = 'subscription'
 param environment string = 'dev'
 
 @description('Name des Projektes')
-param projectname string = 'infrastruktur'
+param projectname string = 'infrastructure'
 
 @description('Ort der Ressourcengruppe')
 param location string = 'westeurope'
