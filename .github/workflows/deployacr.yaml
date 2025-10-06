@@ -1,0 +1,29 @@
+name: Deploy Infrastructure by Bicep
+
+on:
+  workflow_dispatch:
+
+jobs:
+	
+   checkacr:
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS  }}
+      - name: Check ACR
+        run: az deployment group what-if --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./acr.bicep
+
+   deployacr:
+    needs: checkacr
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS  }}
+      - name: Deployment ACR
+        run: az deployment group create --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./acr.bicep
