@@ -1,0 +1,5 @@
+CREATE TABLE Customers (
+  Id INT PRIMARY KEY,
+  NName NVARCHAR(100),
+  City NVARCHAR(100)
+);
