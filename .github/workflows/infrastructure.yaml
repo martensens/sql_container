@@ -11,13 +11,52 @@ jobs:
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS  }}
-      - name: what-if
+      - name: Check ResourceGroup
         run: |
           az deployment sub what-if \
             --location westeurope \
             --template-file ./main.bicep
 
+  deployrg:
+    needs: checkrg
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS  }}
+      - name: Deployment ResourceGroup
+        run: |
+          az deployment sub create \
+            --location westeurope \
+            --template-file ./main.bicep
+
+  checksqlserver:
+    needs: deployrg
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS  }}
+      - name: Deployment SQL Server and Database
+        run: az deployment group what-if --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./db2.bicep
+
+  deploysqlserver:
+    needs: checksqlserver
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS  }}
+      - name: Deployment SQL Server and Database
+        run: az deployment group create --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./db2.bicep
   checkacr:
+    needs: deploysqlserver
     environment: development
     runs-on: ubuntu-latest
     steps:
