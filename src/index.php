@@ -28,8 +28,9 @@ try {
 if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
     $id = $_POST["id"] ?? null;
     $nname = $_POST["NName"] ?? null;
+    $city = $_POST["City"] ?? null;
 
-    if (!empty($id) && !empty($nname)) {
+    if (!empty($id) && !empty($nname) && !empty($city)) {
         try {
             $stmt = $pdo->prepare("INSERT INTO dbo.Customer (id, NName,City) VALUES (:id, :nname,:city)");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
