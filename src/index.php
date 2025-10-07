@@ -2,7 +2,7 @@
 // --------------------
 // Konfiguration
 // --------------------
-$server   = "mstisqlserver02.database.windows.net,1433"; // Unter Linux ggf. Host-IP wie 172.17.0.1
+$server   = "mstisqlserver01.database.windows.net,1433"; // Unter Linux ggf. Host-IP wie 172.17.0.1
 $database = "mstidatabase01";
 $username = "mstiller";
 $password = "Habenichts_01"; // Passwort anpassen
@@ -31,9 +31,10 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (!empty($id) && !empty($nname)) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO dbo.Table_1 (id, NName) VALUES (:id, :nname)");
+            $stmt = $pdo->prepare("INSERT INTO dbo.Customer (id, NName,City) VALUES (:id, :nname,:city)");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->bindParam(":nname", $nname, PDO::PARAM_STR);
+            $stmt->bindParam(":city", $city, PDO::PARAM_STR);
             $stmt->execute();
             $message = "✅ Datensatz erfolgreich eingefügt!";
         } catch (PDOException $e) {
@@ -72,6 +73,9 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
 
             <label for="NName">NName:</label>
             <input type="text" id="NName" name="NName" required>
+
+            <label for="City">City:</label>
+            <input type="text" id="City" name="City" required>
 
             <button type="submit">Einfügen</button>
         </form>
