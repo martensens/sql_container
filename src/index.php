@@ -41,7 +41,7 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
             $message = "❌ Fehler beim Einfügen: " . $e->getMessage();
         }
     } else {
-        $message = "⚠️ Bitte beide Felder ausfüllen!";
+        $message = "⚠️ Bitte ALLE Felder ausfüllen!";
     }
 }
 ?>
@@ -71,7 +71,7 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
             <label for="id">ID:</label>
             <input type="number" id="id" name="id" required>
 
-            <label for="NName">NName:</label>
+            <label for="NName">Nachname:</label>
             <input type="text" id="NName" name="NName" required>
 
             <label for="City">City:</label>
