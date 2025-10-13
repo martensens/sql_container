@@ -1,7 +1,6 @@
 name: Build and Deploy Container App
 
 on:
-
   workflow_dispatch:
 
 jobs:
@@ -10,13 +9,42 @@ jobs:
     defaults:
       run:
         shell: bash
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: azure/docker-login@v1
-      with:
-        login-server: acryok26zgypcrse.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-    - run: |
-        docker build . -t acryok26zgypcrse.azurecr.io/sqlapp:${{ github.sha }}
-        docker push acryok26zgypcrse.azurecr.io/sqlapp:${{ github.sha }}
+      # Schritt 1: Code auschecken
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Schritt 2: Login bei Azure Container Registry
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: acryok26zgypcrse.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      # Schritt 3: Build & Push Docker-Image
+      - name: Build and Push image
+        run: |
+          docker build . -t acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }}
+          docker push acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }}
+
+      # Schritt 4: Azure Login (Service Principal)
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Schritt 5: Redeploy Azure Container Instance
+      - name: Redeploy ACI
+        run: |
+          az container delete -n acryok26zgypcrse -g rg_infrastructure --yes || true
+
+          az container create \
+            -n acryok26zgypcrse \
+            -g rg_infrastructure \
+            --image acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }} \
+            --registry-login-server acryok26zgypcrse.azurecr.io \
+            --registry-username ${{ secrets.REGISTRY_USERNAME }} \
+            --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
+            --ports 8080
