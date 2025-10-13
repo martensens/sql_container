@@ -38,11 +38,11 @@ jobs:
       # Schritt 5: Redeploy Azure Container Instance
       - name: Redeploy ACI
         run: |
-          az container delete -n acryok26zgypcrse -g rg_infrastructure --yes || true
+          az container delete -n acryok26zgypcrse -g rg_dev_infrastructure --yes || true
 
           az container create \
             -n acryok26zgypcrse \
-            -g rg_infrastructure \
+            -g rg_dev_infrastructure \
             --image acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }} \
             --registry-login-server acryok26zgypcrse.azurecr.io \
             --registry-username ${{ secrets.REGISTRY_USERNAME }} \
