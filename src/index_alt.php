@@ -1,4 +1,4 @@
- <?php
+<?php
 // --------------------
 // Konfiguration
 // --------------------
@@ -86,35 +86,6 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
-
-        <?php if (strpos($message, 'erfolgreich') !== false): ?>
-            <?php
-            try {
-                $stmt = $pdo->prepare("SELECT * FROM dbo.Customer");
-                $stmt->execute();
-
-                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                if ($rows && count($rows) > 0) {
-                    echo "<h3>Alle Datensätze:</h3>";
-                    echo "<table border='1' cellpadding='5' cellspacing='0'>";
-                    echo "<tr><th>ID</th><th>Nachname</th><th>City</th></tr>";
-
-                    foreach ($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['id']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['NName']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['City']) . "</td>";
-                        echo "</tr>";
-                    }
-
-                    echo "</table>";
-                } else {
-                    echo "<p>Keine Datensätze gefunden.</p>";
-                }
-            } catch (PDOException $e) {
-                echo "<p class='error'>❌ Fehler beim Abruf: " . htmlspecialchars($e->getMessage()) . "</p>";
-            }
-            ?>
-        <?php endif; ?>
-<?php endif; ?>
+    <?php endif; ?>
+</body>
+</html>
