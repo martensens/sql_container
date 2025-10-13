@@ -1,5 +1,5 @@
 param loc string = resourceGroup().location
-param serverName string = 'mstisqlserver02'
+param serverName string = 'mstisqlserver01'
 param dbName string = 'mstidatabase01'
 
 resource serverename 'Microsoft.Sql/servers@2015-05-01-preview' = {
