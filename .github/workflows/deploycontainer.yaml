@@ -51,6 +51,6 @@ jobs:
             --cpu 1 \
             --memory 1 \
             --ip-address Public \
-            --dns-name-label sqlapp-${{ github.run_number }} \
+            --dns-name-label sqlapp- acryok26zgypcrse\
             --restart-policy Always
 
