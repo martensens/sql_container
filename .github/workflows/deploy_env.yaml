@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 name: Build
 on:
  workflow_dispatch:
 
+=======
+name: Deploy with json-file output
+on:
+  workflow_dispatch
+>>>>>>> 6ae02ad3dfd705cede518683d40198696b93536f
 jobs:
   build:
     runs-on: ubuntu-latest
