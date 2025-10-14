@@ -38,9 +38,9 @@ jobs:
       # Schritt 5: Redeploy Azure Container Instance
       - name: Redeploy ACI
         run: |
-          az container delete -n acryok26zgypcrse -g rg_dev_infrastructure --yes || true
-
-          az container create \
+            az container delete -n acryok26zgypcrse -g rg_dev_infrastructure --yes || true
+            
+            az container create \
             -n acryok26zgypcrse \
             -g rg_dev_infrastructure \
             --image acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }} \
@@ -50,4 +50,8 @@ jobs:
             --os-type Linux \
             --cpu 1 \
             --memory 1 \
-            --port 8080
+            --port 8080 \
+            --ip-address Public \
+            --dns-name-label sqlapp-${{ github.run_number }} \
+            --restart-policy Always
+
