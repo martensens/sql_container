@@ -1,0 +1,28 @@
+name: Deploy
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lade Artefakt herunter
+        uses: actions/download-artifact@v4
+        with:
+          name: build-data
+
+      - name: Zeige JSON-Inhalt
+        run: cat data.json
+
+      - name: Lese Wert aus JSON
+        id: read_json
+        run: |
+          VERSION=$(jq -r '.version' data.json)
+          echo "Version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Verwende Wert
+        run: echo "Deploying version ${{ steps.read_json.outputs.version }}"
