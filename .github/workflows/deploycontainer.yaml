@@ -50,6 +50,4 @@ jobs:
             --os-type Linux \
             --cpu 1 \
             --memory 1 \
-            --ports 8080
-
-            --ports 8080
+            --port 8080
