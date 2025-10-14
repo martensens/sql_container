@@ -59,7 +59,7 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
         button { margin-top: 1rem; padding: 0.5rem 1rem; }
         .msg { margin-top: 1rem; font-weight: bold; }
         .error { color: red; }
-        .success { color: green; }
+        .success { color: blueviolet; }
     </style>
 </head>
 <body>
