@@ -63,7 +63,7 @@ if ($pdo && $_SERVER["REQUEST_METHOD"] === "POST") {
     </style>
 </head>
 <body>
-    <h1>Datensatz in SQL Server einfügen</h1>
+    <h1>Datensatz in den SQL Server einfügen</h1>
 
     <?php if ($connectError): ?>
         <div class="msg error"><?= htmlspecialchars($connectError) ?></div>
