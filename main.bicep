@@ -24,3 +24,4 @@ module containerRegistryModule 'acr.bicep' = {
   }
 }
 
+output containerRegistryName string = containerRegistryModule.outputs.acrName 
