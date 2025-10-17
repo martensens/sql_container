@@ -16,3 +16,11 @@ resource rg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   location: location
 }
 
+module containerRegistryModule 'acr.bicep' = {
+  name: 'containerRegistryModule'
+  scope: rg
+  params: {
+    acrName: 'acr${projectname}${environment}'
+  }
+}
+

@@ -19,6 +19,7 @@ jobs:
 
   deployrg:
     needs: checkrg
+    if: github.ref == 'refs/heads/main'
     environment: development
     runs-on: ubuntu-latest
     steps:
@@ -46,6 +47,7 @@ jobs:
 
   deploysqlserver:
     needs: checksqlserver
+    if: github.ref == 'refs/heads/main'
     environment: development
     runs-on: ubuntu-latest
     steps:
@@ -56,26 +58,4 @@ jobs:
       - name: Deployment SQL Server and Database
         run: az deployment group create --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./db2.bicep
         
-  checkacr:
-    needs: deploysqlserver
-    environment: development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS  }}
-      - name: Check ACR
-        run: az deployment group what-if --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./acr.bicep
-
-  deployacr:
-    needs: checkacr
-    environment: development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS  }}
-      - name: Deployment ACR
-        run: az deployment group create --mode Incremental --name rollout01 --resource-group 'rg_dev_infrastructure' --template-file ./acr.bicep
+ 
