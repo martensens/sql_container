@@ -24,7 +24,7 @@ jobs:
           path: deployment_output.json
   deployResources:
     needs: checkResources
-    if: github.ref == 'refs/heads/main'
+   
     environment: development
     runs-on: ubuntu-latest
     steps:
