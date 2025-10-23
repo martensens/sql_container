@@ -13,7 +13,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS  }}
       - name: Deployment ResourceGroup
-        run: ||
+        run: |
           az deployment sub create \
             --location westeurope \
             --template-file ./main.bicep \
