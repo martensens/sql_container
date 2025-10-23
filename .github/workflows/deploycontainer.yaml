@@ -29,7 +29,7 @@ jobs:
           docker build . -t acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }}
           docker push acryok26zgypcrse.azurecr.io/sqlapp:${{ github.run_number }}
 
-      # Schritt 4: Azure Login (Service Principal)
+      # Schritt 4: Azure Login (Service Principal) #
       - name: Azure Login
         uses: azure/login@v2
         with:

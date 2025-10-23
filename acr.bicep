@@ -5,14 +5,19 @@ param acrName string = 'acr${uniqueString(resourceGroup().id)}'
 @description('Ein Standort für die ACR')
 param location string = resourceGroup().location
 
+@description('SKU')
+param acrSKU string = 'Basic'
 
-resource acrRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
+
+resource acrResource 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
   name: acrName
   location: location
   sku: {
-    name: 'Basic'
+    name: acrSKU
   }
   properties:{
     adminUserEnabled: true
   }
 }
+
+output acrName string = acrResource.name
