@@ -48,7 +48,7 @@ jobs:
 
         - name: Extract verson from project
           run: |
-            VNo="/project.xml"
+            VNo="/src/project.xml"
             VERSION=$(xmllint --xpath 'string(//Version|//PropertyGroup/Version)' "$VNo")
             [ -z "$VERSION" ] && exho "Missing <Version> in $VNo" && exit 1
             echo "VERSION=$VERSION" >> $GITHUB_ENV
