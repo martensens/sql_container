@@ -9,7 +9,7 @@ param location string = resourceGroup().location
 param acrSKU string = 'Basic'
 
 
-resource acrRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
+resource acrResource 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
   name: acrName
   location: location
   sku: {
@@ -20,4 +20,4 @@ resource acrRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
   }
 }
 
-output acrName string = acrRegistry.name
+output acrName string = acrResource.name
