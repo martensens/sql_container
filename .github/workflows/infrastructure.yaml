@@ -17,11 +17,11 @@ jobs:
           az deployment sub create \
             --location westeurope \
             --template-file ./main.bicep \
-            --output json > deployment_output.json \
+            --output json > deployment_output-${{ github.run_number }}.json \
       - name: Upload deployment output
         uses: actions/upload-artifact@v4
         with: 
           name: deployment output-${{ github.run_number }}
-          path: dist/
+          path: deployment_output-${{ github.run_number }}.json
 
 
