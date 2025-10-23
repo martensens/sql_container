@@ -21,7 +21,7 @@ jobs:
       - name: Upload deployment output
         uses: actions/upload-artifact@v4
         with: 
-          name: deployment output-${{ github.run_number }}
+          name: deployment-output-${{ github.run_number }}
           path: deployment_output-${{ github.run_number }}.json
 
 
