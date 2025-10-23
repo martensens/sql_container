@@ -4,27 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkResources:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS  }}
-      - name: Check ResourceGroup
-        run: |
-          az deployment sub what-if \
-            --location westeurope \
-            --template-file ./main.bicep \
-            --output json > deployment_output.json \
-      - name: Upload deployment output
-        uses: actions/upload-artifact@v4
-        with: 
-          name: deployment output
-          path: deployment_output.json
   deployResources:
-    needs: checkResources
-   
     environment: development
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +21,7 @@ jobs:
       - name: Upload deployment output
         uses: actions/upload-artifact@v4
         with: 
-          name: deployment output--${{ github.run_number }}
-          path: deployment_output--${{ github.run_number }}.json
+          name: deployment output-${{ github.run_number }}
+          path: dist/
 
 
