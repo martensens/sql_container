@@ -1,8 +1,8 @@
 name: Deploy Infrastructure
-
 on:
-  workflow_dispatch:
-
+  push:
+    branches:
+      - 'feature/add-login'
 jobs:
   deployResources:
     environment: development
