@@ -1,7 +1,9 @@
-name: Deploy Infrastructure
+name: Deploy Infrastructure for Azure
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'feature/add-login'
 
 jobs:
   deployResources:
@@ -24,7 +26,7 @@ jobs:
           name: deployment-output-${{ github.run_number }}
           path: deployment_output-${{ github.run_number }}.json
 
-  acr-build:
+  acrBuild:
     needs: deployResources
     runs-on: ubuntu-latest
     steps:
