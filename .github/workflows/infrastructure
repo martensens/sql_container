@@ -1,6 +1,7 @@
 name: Deploy Infrastructure for Azure
 
 on:
+
   push:
     branches:
       - 'feature/add-login'
