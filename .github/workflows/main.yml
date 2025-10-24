@@ -1,0 +1,59 @@
+name: Deploy Infrastructure for Azure
+
+on:
+
+  push:
+    branches:
+      - 'feature/add-login'
+
+jobs:
+  deployResources:
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Deployment ResourceGroup
+        run: |
+          az deployment sub create \
+            --location westeurope \
+            --template-file ./main.bicep \
+            --output json > deployment_output-${{ github.run_number }}.json
+      - name: Upload deployment output
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-output-${{ github.run_number }}
+          path: deployment_output-${{ github.run_number }}.json
+
+  acrBuild:
+    needs: deployResources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download deployment output
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-output-${{ github.run_number }}
+
+      - name: Read ACR name
+        run: |
+          ACR_NAME=$(jq -r '.properties.outputs.containerRegistryName.value' deployment_output-${{ github.run_number }}.json)
+          echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Extract version from project
+        run: |
+          VNo="/src/project.xml"
+          VERSION=$(xmllint --xpath 'string(//Version|//PropertyGroup/Version)' "$VNo")
+          [ -z "$VERSION" ] && echo "Missing <Version> in $VNo" && exit 1
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Project version: $VERSION"
